@@ -22,7 +22,7 @@ const value = computed({
 
 const isComplete = computed(() => {
 	const digits = props.modelValue.replace(/\D/g, '')
-	if (digits.length === 0) return true
+	//if (digits.length === 0) return true
 
 	return digits.length >= 11
 })
@@ -35,7 +35,7 @@ const isComplete = computed(() => {
 			v-model="value"
 			type="tel"
 			placeholder="+7 (___) ___-__-__"
-			:class="{ uncorrect: !isComplete }"
+			:class="{ uncorrect: showErrors && !isComplete }"
 		/>
 	</div>
 </template>
