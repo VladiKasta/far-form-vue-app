@@ -12,6 +12,7 @@ import LeftArrowIcon from './UI/LeftArrowIcon.vue'
 const step = ref(1)
 const answers = reactive({})
 const defaultAgreement = ref(true)
+const showErrors = ref(false)
 
 const questionsComponents = [
 	FirstQuestion,
@@ -67,6 +68,13 @@ const handleAnswer = data => {
 const nextStep = e => {
 	e.preventDefault()
 
+	if (!isStepValid.value || !defaultAgreement.value) {
+		showErrors.value = true
+		return
+	}
+
+	showErrors.value = false
+
 	if (step.value === 5) {
 		console.log(answers)
 		return
@@ -106,7 +114,11 @@ const prevStep = () => {
 	</div>
 
 	<div class="form-footer">
-		<Policy v-model="defaultAgreement" />
+		<Policy
+			v-model="defaultAgreement"
+			:show-errors="showErrors"
+			@addError="showErrors = $event"
+		/>
 
 		<button
 			class="form-btn"
