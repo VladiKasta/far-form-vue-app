@@ -8,7 +8,7 @@ const props = defineProps({
 
 console.log('from Policy', props.modelValue)
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'addError'])
 
 const value = computed({
 	get: () => props.modelValue,
@@ -30,7 +30,7 @@ const value = computed({
 			<span class="checkmark"></span>
 		</label>
 		<label for="agreement">
-			Даю согласие на
+			<!-- Даю согласие на
 			<a
 				style="text-decoration: underline"
 				:class="{ 'text-red': showErrors && !value }"
@@ -38,19 +38,12 @@ const value = computed({
 			>
 				политику конфиденциальности
 			</a>
-			и публикацию контактных данных на карте монтажников на сайте far.ru. Ознакомьтесь с
-			<a
-				style="text-decoration: underline"
-				:class="{ 'text-red': showErrors && !value }"
-				href="#"
-			>
-				условиями аккредитации монтажников
-			</a>
-			FAR
-			<br />
-			<span>* - поля являются обязательными для заполнения.</span>
+			и публикацию контактных данных на карте монтажников на сайте far.ru. -->
+			<slot name="policy1"></slot>
+
+			<slot name="policy2"></slot>
+
+			<!-- <span>* - поля являются обязательными для заполнения.</span> -->
 		</label>
 	</div>
 </template>
-
-<style></style>

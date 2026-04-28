@@ -6,6 +6,7 @@ import FioInput from '../components/FioInput.vue'
 import NumberInput from '../components/NumberInput.vue'
 import Policy from '../components/Policy.vue'
 import CloseIcon from '../components/UI/CloseIcon.vue'
+import DownloadIcon from '../components/UI/DownloadIcon.vue'
 import LeftArrowIcon from '../components/UI/LeftArrowIcon.vue'
 import { cities } from '../composables/cities'
 
@@ -25,7 +26,8 @@ const props = defineProps({
 			phone: '',
 			email: '',
 			site: '',
-			policy: false,
+			policy1: false,
+			policy2: false,
 		}),
 	},
 	step: {
@@ -58,7 +60,8 @@ const isValid = computed(() => {
 		formData.value.city.trim().length > 0 &&
 		formData.value.phone.replace(/\D/g, '').length >= 11 &&
 		/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.value.email) &&
-		formData.value.policy
+		formData.value.policy1 &&
+		formData.value.policy2
 	)
 })
 
@@ -70,7 +73,7 @@ const validFieldsCount = computed(() => {
 	const digits = formData.value.phone.replace(/\D/g, '')
 	if (digits.length === 11) count++
 	if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.value.email)) count++
-	if (formData.value.policy) count++
+	if (formData.value.policy1 && formData.value.policy2) count++
 
 	return count
 })
@@ -81,7 +84,8 @@ const validators = {
 	city: v => v.trim().length > 0,
 	phone: v => getDigits(v).length === 11,
 	email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
-	policy: v => v,
+	policy1: v => v,
+	policy2: v => v,
 }
 
 const isFieldInvalid = field => {
@@ -198,10 +202,47 @@ const isFieldInvalid = field => {
 				</div>
 			</div>
 			<div class="form-footer">
-				<Policy
-					v-model="formData.policy"
-					:show-errors="showErrors"
-				></Policy>
+				<div style="display: flex; flex-direction: column; gap: 5px">
+					<!-- первый -->
+					<Policy
+						v-model="formData.policy1"
+						:show-errors="showErrors"
+					>
+						<!-- первый -->
+						<template #policy1>
+							Даю согласие на
+							<a
+								style="text-decoration: underline"
+								:class="{ 'text-red': showErrors && !formData.policy1 }"
+								href="#"
+							>
+								политику конфиденциальности
+							</a>
+							и публикацию контактных данных на карте монтажников на сайте far.ru.
+						</template>
+					</Policy>
+
+					<!-- второй -->
+					<Policy
+						v-model="formData.policy2"
+						:show-errors="showErrors"
+					>
+						<!-- второй -->
+						<template #policy2>
+							<div style="display: flex; align-items: center; gap: 5px; font-size: 14px">
+								Ознакомьтесь с
+								<a
+									style="text-decoration: underline"
+									:class="{ 'text-red': showErrors && !formData.policy2 }"
+									href="#"
+								>
+									правилами аккредитации монтажников FAR
+								</a>
+								<a href="#"><DownloadIcon /></a>
+							</div>
+						</template>
+					</Policy>
+				</div>
 
 				<button
 					class="form-btn"

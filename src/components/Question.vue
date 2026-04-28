@@ -7,11 +7,13 @@ import FirstQuestion from './questions/FirstQuestion.vue'
 import ForthQuestion from './questions/ForthQuestion.vue'
 import SecondQuestion from './questions/SecondQuestion.vue'
 import ThirdQuestion from './questions/ThirdQuestion.vue'
+import DownloadIcon from './UI/DownloadIcon.vue'
 import LeftArrowIcon from './UI/LeftArrowIcon.vue'
 
 const step = ref(1)
 const answers = reactive({})
-const defaultAgreement = ref(true)
+const defaultAgreement1 = ref(true)
+const defaultAgreement2 = ref(true)
 const showErrors = ref(false)
 
 const questionsComponents = [
@@ -56,7 +58,7 @@ const isStepValid = computed(() => {
 
 // 👉 кнопка
 const allowNext = computed(() => {
-	return isStepValid.value && defaultAgreement.value
+	return isStepValid.value && defaultAgreement1.value && defaultAgreement2.value
 })
 
 // 👉 просто сохраняем данные
@@ -68,7 +70,7 @@ const handleAnswer = data => {
 const nextStep = e => {
 	e.preventDefault()
 
-	if (!isStepValid.value || !defaultAgreement.value) {
+	if (!isStepValid.value || !defaultAgreement1.value || !defaultAgreement2.value) {
 		showErrors.value = true
 		return
 	}
@@ -114,11 +116,47 @@ const prevStep = () => {
 	</div>
 
 	<div class="form-footer">
-		<Policy
-			v-model="defaultAgreement"
-			:show-errors="showErrors"
-			@addError="showErrors = $event"
-		/>
+		<div style="display: flex; flex-direction: column; gap: 5px">
+			<!-- первый -->
+			<Policy
+				v-model="defaultAgreement1"
+				:show-errors="showErrors"
+			>
+				<!-- первый -->
+				<template #policy1>
+					Даю согласие на
+					<a
+						style="text-decoration: underline"
+						:class="{ 'text-red': showErrors && !defaultAgreement1 }"
+						href="#"
+					>
+						политику конфиденциальности
+					</a>
+					и публикацию контактных данных на карте монтажников на сайте far.ru.
+				</template>
+			</Policy>
+
+			<!-- второй -->
+			<Policy
+				v-model="defaultAgreement2"
+				:show-errors="showErrors"
+			>
+				<!-- второй -->
+				<template #policy2>
+					<div style="display: flex; align-items: center; gap: 5px; font-size: 14px">
+						Ознакомьтесь с
+						<a
+							style="text-decoration: underline"
+							:class="{ 'text-red': showErrors && !defaultAgreement2 }"
+							href="#"
+						>
+							правилами аккредитации монтажников FAR
+						</a>
+						<a href="#"><DownloadIcon /></a>
+					</div>
+				</template>
+			</Policy>
+		</div>
 
 		<button
 			class="form-btn"
