@@ -230,13 +230,13 @@ const isFieldInvalid = field => {
 						<!-- второй -->
 						<template #policy2>
 							<div style="display: flex; align-items: center; gap: 5px; font-size: 14px">
-								Ознакомьтесь с
+								Даю согласие на
 								<a
 									style="text-decoration: underline"
 									:class="{ 'text-red': showErrors && !formData.policy2 }"
 									href="#"
 								>
-									правилами аккредитации монтажников FAR
+									условия аккредитации монтажников FAR
 								</a>
 								<a href="#"><DownloadIcon /></a>
 							</div>

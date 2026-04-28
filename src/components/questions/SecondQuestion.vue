@@ -65,7 +65,7 @@ watch(
 				v-show="resultAnswer.answer == 'yes'"
 				class="comment-wrapper"
 			>
-				<span>комментарий *</span>
+				<span>Опишите примеры *</span>
 				<textarea
 					name="comment"
 					id="comment"

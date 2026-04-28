@@ -121,6 +121,7 @@ const prevStep = () => {
 			<Policy
 				v-model="defaultAgreement1"
 				:show-errors="showErrors"
+				@addError="showErrors = true"
 			>
 				<!-- первый -->
 				<template #policy1>
@@ -140,6 +141,7 @@ const prevStep = () => {
 			<Policy
 				v-model="defaultAgreement2"
 				:show-errors="showErrors"
+				@addError="showErrors = true"
 			>
 				<!-- второй -->
 				<template #policy2>
