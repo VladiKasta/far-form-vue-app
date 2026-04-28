@@ -17,7 +17,7 @@ export const steps = [
 	},
 	{
 		id: 4,
-		label: 'Применяли ли Вы арматуру FAR?',
+		label: 'Вы применяли в ранее смонтированных инженерных системах трубопроводную арматуру FAR?',
 		required: data => (data.answer === 'yes' ? ['answer', 'files'] : ['answer']),
 	},
 	{ id: 5, label: 'Дополнительная информация', required: [] },
