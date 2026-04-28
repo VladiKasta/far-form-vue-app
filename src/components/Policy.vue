@@ -19,7 +19,7 @@ const value = computed({
 <template>
 	<div
 		class="checkbox"
-		:class="{ 'text-red': (showErrors && !value) || !value }"
+		:class="{ 'text-red': showErrors && !value ? 'text-red' : '' }"
 	>
 		<label class="custom-checkbox">
 			<input
@@ -32,7 +32,7 @@ const value = computed({
 			Даю согласие на
 			<a
 				style="text-decoration: underline"
-				:class="{ 'text-red': (showErrors && !value) || !value }"
+				:class="{ 'text-red': showErrors && !value ? 'text-red' : '' }"
 				href="#"
 			>
 				политику конфиденциальности
@@ -40,7 +40,7 @@ const value = computed({
 			и публикацию контактных данных на карте монтажников на сайте far.ru. Ознакомьтесь с
 			<a
 				style="text-decoration: underline"
-				:class="{ 'text-red': (showErrors && !value) || !value }"
+				:class="{ 'text-red': showErrors && !value ? 'text-red' : '' }"
 				href="#"
 			>
 				условиями аккредитации монтажников
