@@ -17,17 +17,20 @@ const formData = reactive({
 	policy: false,
 })
 
-const layaoutStep = ref(1)
+const layoutStep = ref(1)
 </script>
 
 <template>
 	<Transition name="slide">
 		<PersonalDataLayout
-			v-if="layaoutStep === 1"
-			v-model:step="layaoutStep"
+			v-if="layoutStep === 1"
+			v-model:step="layoutStep"
 			v-model:form="formData"
 		></PersonalDataLayout>
 
-		<QuestionsLayout v-else></QuestionsLayout>
+		<QuestionsLayout
+			v-else
+			v-model:step="layoutStep"
+		></QuestionsLayout>
 	</Transition>
 </template>

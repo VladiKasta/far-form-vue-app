@@ -6,6 +6,8 @@ import CloseIcon from '../components/UI/CloseIcon.vue'
 onMounted(() => {
 	console.log('QuestionsLayout')
 })
+
+const emit = defineEmits(['update:step'])
 </script>
 
 <template>
@@ -18,7 +20,12 @@ onMounted(() => {
 		</div>
 
 		<div class="progress-bar">
-			<span class="step filled">Контактные данные</span>
+			<span
+				class="step filled"
+				@click="emit('update:step', 1)"
+			>
+				Контактные данные
+			</span>
 
 			<div
 				class="progress-line"
