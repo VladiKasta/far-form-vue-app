@@ -1,14 +1,18 @@
-export const steps = [
+import { StepConfig } from '../interface/Step'
+
+const steps: StepConfig[] = [
 	{
 		id: 1,
 		label: 'Есть ли у Вас опыт монтажа инженерных систем более 5 лет?',
-		required: data => (data.answer === 'yes' ? ['answer', 'files'] : ['answer']),
+		required: (data: { answer: string }) =>
+			data.answer === 'yes' ? ['answer', 'files'] : ['answer'],
 	},
 	{
 		id: 2,
 		label:
 			'Умеете ли Вы самостоятельно комплектовать и подбирать оборудование для систем отопления и водоснабжения?',
-		required: data => (data.answer === 'yes' ? ['answer', 'comment'] : ['answer']),
+		required: (data: { answer: string }) =>
+			data.answer === 'yes' ? ['answer', 'comment'] : ['answer'],
 	},
 	{
 		id: 3,
@@ -19,7 +23,10 @@ export const steps = [
 	{
 		id: 4,
 		label: 'Вы использовали трубопроводную арматуру FAR в ранее установленных инженерных системах?',
-		required: data => (data.answer === 'yes' ? ['answer', 'files'] : ['answer']),
+		required: (data: { answer: string }) =>
+			data.answer === 'yes' ? ['answer', 'files'] : ['answer'],
 	},
 	{ id: 5, label: 'Дополнительная информация', required: [] },
 ]
+
+export { steps }

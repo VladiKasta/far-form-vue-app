@@ -1,6 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { steps } from '../composables/questionsData.js'
+import { steps } from '../composables/questionsData'
+import { AnswerData } from '../interface/Answer'
+import { StepConfig } from '../interface/Step'
 import Policy from './Policy.vue'
 import FifthQuestion from './questions/FifthQuestion.vue'
 import FirstQuestion from './questions/FirstQuestion.vue'
@@ -11,7 +13,7 @@ import DownloadIcon from './UI/DownloadIcon.vue'
 import LeftArrowIcon from './UI/LeftArrowIcon.vue'
 
 const step = ref(1)
-const answers = reactive({})
+const answers = reactive<Record<number, AnswerData>>({})
 const defaultAgreement1 = ref(true)
 const defaultAgreement2 = ref(true)
 const showErrors = ref(false)
@@ -30,7 +32,7 @@ const currentData = computed(() => {
 })
 
 // 👉 получить обязательные поля
-const getRequiredFields = (stepConfig, data) => {
+const getRequiredFields = (stepConfig: StepConfig, data: AnswerData) => {
 	if (!stepConfig.required) return []
 
 	return typeof stepConfig.required === 'function' ? stepConfig.required(data) : stepConfig.required
@@ -62,12 +64,12 @@ const allowNext = computed(() => {
 })
 
 // 👉 просто сохраняем данные
-const handleAnswer = data => {
+const handleAnswer = (data: AnswerData) => {
 	answers[step.value] = data
 }
 
 // 👉 переход дальше
-const nextStep = e => {
+const nextStep = (e: MouseEvent) => {
 	e.preventDefault()
 
 	if (!isStepValid.value || !defaultAgreement1.value || !defaultAgreement2.value) {
@@ -83,11 +85,6 @@ const nextStep = e => {
 	}
 
 	step.value++
-}
-
-// 👉 назад (опционально)
-const prevStep = () => {
-	if (step.value > 1) step.value--
 }
 </script>
 

@@ -1,18 +1,20 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 
-const props = defineProps({
-	modelValue: {
-		type: String,
-		default: '',
-	},
-	showErrors: {
-		type: Boolean,
-		default: false,
-	},
-})
+const props = withDefaults(
+	defineProps<{
+		modelValue: string
+		showErrors: boolean
+	}>(),
+	{
+		modelValue: '',
+		showErrors: false,
+	}
+)
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits<{
+	(e: 'update:modelValue', value: string): void
+}>()
 
 const email = computed({
 	get: () => props.modelValue,

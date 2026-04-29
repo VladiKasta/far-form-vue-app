@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import CitySelect from '../components/CitySelect.vue'
 import EmailInput from '../components/EmailInput.vue'
@@ -8,7 +8,8 @@ import Policy from '../components/Policy.vue'
 import CloseIcon from '../components/UI/CloseIcon.vue'
 import DownloadIcon from '../components/UI/DownloadIcon.vue'
 import LeftArrowIcon from '../components/UI/LeftArrowIcon.vue'
-import { cities } from '../composables/cities'
+import { cities } from '../composables/cities.js'
+import { FormData } from '../interface/FormData'
 
 const showErrors = ref(false)
 
@@ -16,10 +17,18 @@ onMounted(() => {
 	console.log('bitrix extension + vue mounted')
 })
 
-const props = defineProps({
-	form: {
-		type: Object,
-		default: () => ({
+const slots = defineSlots<{
+	policy1?: () => any
+	policy2?: () => any
+}>()
+
+const props = withDefaults(
+	defineProps<{
+		form?: FormData
+		step: number
+	}>(),
+	{
+		form: (): FormData => ({
 			fio: '',
 			city: '',
 			portfolioLink: '',
@@ -29,12 +38,9 @@ const props = defineProps({
 			policy1: false,
 			policy2: false,
 		}),
-	},
-	step: {
-		type: Number,
-		default: 1,
-	},
-})
+		step: 1,
+	}
+)
 
 const emit = defineEmits(['update:form', 'update:step'])
 
@@ -43,7 +49,7 @@ const formData = computed({
 	set: value => emit('update:form', value),
 })
 
-const validate = e => {
+const validate = (e: MouseEvent) => {
 	e.preventDefault()
 	showErrors.value = true
 
@@ -67,7 +73,6 @@ const isValid = computed(() => {
 
 const validFieldsCount = computed(() => {
 	let count = 0
-
 	if (formData.value.fio.trim().length > 0) count++
 	if (formData.value.city.trim().length > 0) count++
 	const digits = formData.value.phone.replace(/\D/g, '')
@@ -78,18 +83,24 @@ const validFieldsCount = computed(() => {
 	return count
 })
 
-const getDigits = phone => phone.replace(/\D/g, '')
-const validators = {
+type ValidatorFields = Omit<FormData, 'portfolioLink' | 'site'>
+const getDigits = (phone: string) => phone.replace(/\D/g, '')
+const validators: {
+	[K in keyof ValidatorFields]: (value: ValidatorFields[K]) => boolean
+} = {
 	fio: v => v.trim().length > 0,
 	city: v => v.trim().length > 0,
 	phone: v => getDigits(v).length === 11,
 	email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
-	policy1: v => v,
-	policy2: v => v,
+	policy1: v => v === true,
+	policy2: v => v === true,
 }
 
-const isFieldInvalid = field => {
-	return showErrors.value && !validators[field](formData.value[field])
+const isFieldInvalid = <K extends keyof ValidatorFields>(field: K) => {
+	const validator = validators[field]
+	const value = formData.value[field]
+
+	return showErrors.value && !validator(value)
 }
 </script>
 

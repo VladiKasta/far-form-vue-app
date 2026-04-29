@@ -1,5 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
+import { FormData } from '../interface/FormData'
 import PersonalDataLayout from './PersonalDataLayout.vue'
 import QuestionsLayout from './QuestionsLayout.vue'
 
@@ -7,17 +8,18 @@ onMounted(() => {
 	console.log('bitrix extension + vue mounted')
 })
 
-const formData = reactive({
+const formData = reactive<FormData>({
 	fio: '',
 	city: '',
 	portfolioLink: '',
 	phone: '',
 	email: '',
 	site: '',
-	policy: false,
+	policy1: false,
+	policy2: false,
 })
 
-const layoutStep = ref(1)
+const layoutStep = ref<number>(1)
 </script>
 
 <template>

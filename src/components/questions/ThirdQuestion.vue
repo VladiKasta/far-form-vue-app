@@ -1,10 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { reactive, watch } from 'vue'
+import { StepConfig } from '../../interface/Step'
 
-const props = defineProps({
-	steps: Array,
-	step: Number,
-})
+const props = defineProps<{
+	steps: StepConfig[]
+	step: number
+}>()
 const emit = defineEmits(['setStep', 'getAnswer'])
 const resultAnswer = reactive({
 	brands: '',

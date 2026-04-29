@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import LayoutsFormWrapper from './layouts/LayoutsFormWrapper.vue'
 </script>
 

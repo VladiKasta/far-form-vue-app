@@ -1,11 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
+import { StepConfig } from '../../interface/Step'
 
 // 👉 принимаем данные от родителя
-const props = defineProps({
-	steps: Array, // список вопросов
-	step: Number, // текущий шаг
-})
+const props = defineProps<{
+	steps: StepConfig[]
+	step: number
+}>()
 
 // 👉 события для связи с родителем
 const emit = defineEmits(['setStep', 'getAnswer'])
@@ -14,14 +15,27 @@ const emit = defineEmits(['setStep', 'getAnswer'])
 const answer = ref('')
 
 // 👉 общий объект ответа, который отправляем наверх
-const resultAnswer = reactive({
-	answer: '', // yes / no
-	files: [], // массив файлов (в виде blob URL)
+type FileItem = {
+	file: File
+	objectURL: string
+}
+
+type ResultAnswer = {
+	answer: string
+	files: FileItem[]
+}
+
+const resultAnswer = reactive<ResultAnswer>({
+	answer: '',
+	files: [],
 })
 
 // 👉 открываем скрытый input[type="file"]
 const chooseFiles = () => {
-	document.querySelector('.input-files').click()
+	const input = document.querySelector('.input-files') as HTMLInputElement
+	if (input) {
+		input.click()
+	}
 }
 
 // 👉 следим за любыми изменениями resultAnswer
@@ -35,29 +49,26 @@ watch(
 )
 
 // 👉 обработка выбора файлов
-const getFiles = e => {
-	const input = e.target
+const getFiles = (e: Event) => {
+	const input = e.target as HTMLInputElement
 
-	// если пользователь выбрал файлы
-	if (input.files.length > 0) {
-		for (let i = 0; i < input.files.length; i++) {
-			const file = input.files[i]
+	if (!input || !input.files) return
 
-			if (file) {
-				// создаём временный URL для отображения (превью)
-				const objectURL = URL.createObjectURL(file)
+	const files = input.files
 
-				// добавляем в массив
-				resultAnswer.files.push({ file, objectURL })
-			}
-		}
+	for (let i = 0; i < files.length; i++) {
+		const file = files[i]
+
+		const objectURL = URL.createObjectURL(file)
+
+		resultAnswer.files.push({
+			file,
+			objectURL,
+		})
 	}
 
-	// 👉 важно:
-	// сбрасываем input, чтобы можно было выбрать те же файлы повторно
 	input.value = ''
 }
-
 const isAllowUpload = computed(() => {
 	return resultAnswer.answer === 'yes'
 })

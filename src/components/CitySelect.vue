@@ -1,3 +1,74 @@
+<script setup lang="ts">
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+
+/* const props = defineProps({
+	modelValue: String,
+	options: {
+		type: Array,
+		required: true,
+	},
+	placeholder: {
+		type: String,
+		default: 'Выберите город',
+	},
+	showErrors: {
+		type: Boolean,
+		default: false,
+	},
+}) */
+
+const props = withDefaults(
+	defineProps<{
+		modelValue: string
+		options: { label: string; value: string }[]
+		placeholder?: string
+		showErrors?: boolean
+	}>(),
+	{
+		placeholder: 'Выберите город',
+		showErrors: false,
+	}
+)
+
+const emit = defineEmits(['update:modelValue'])
+
+const isOpen = ref(false)
+const dropdown = ref<Node>()
+
+const selectedLabel = computed(() => {
+	const found = props.options.find(o => o.value === props.modelValue)
+	return found ? found.label : ''
+})
+
+const isInvalid = computed(() => {
+	return props.showErrors && !props.modelValue
+})
+
+const toggle = () => {
+	isOpen.value = !isOpen.value
+}
+
+const select = (city: { label: string; value: string }) => {
+	emit('update:modelValue', city.value)
+	isOpen.value = false
+}
+
+const handleClickOutside = (e: MouseEvent) => {
+	const target = e.target as Node
+	if (dropdown.value && !dropdown.value.contains(target)) {
+		isOpen.value = false
+	}
+}
+
+onMounted(() => {
+	document.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+	document.removeEventListener('click', handleClickOutside)
+})
+</script>
+
 <template>
 	<div
 		class="dropdown"
@@ -34,63 +105,6 @@
 		</div>
 	</div>
 </template>
-
-<script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-
-const props = defineProps({
-	modelValue: String,
-	options: {
-		type: Array,
-		required: true,
-	},
-	placeholder: {
-		type: String,
-		default: 'Выберите город',
-	},
-	showErrors: {
-		type: Boolean,
-		default: false,
-	},
-})
-
-const emit = defineEmits(['update:modelValue'])
-
-const isOpen = ref(false)
-const dropdown = ref(null)
-
-const selectedLabel = computed(() => {
-	const found = props.options.find(o => o.value === props.modelValue)
-	return found ? found.label : ''
-})
-
-const isInvalid = computed(() => {
-	return props.showErrors && !props.modelValue
-})
-
-const toggle = () => {
-	isOpen.value = !isOpen.value
-}
-
-const select = city => {
-	emit('update:modelValue', city.value)
-	isOpen.value = false
-}
-
-const handleClickOutside = e => {
-	if (dropdown.value && !dropdown.value.contains(e.target)) {
-		isOpen.value = false
-	}
-}
-
-onMounted(() => {
-	document.addEventListener('click', handleClickOutside)
-})
-
-onBeforeUnmount(() => {
-	document.removeEventListener('click', handleClickOutside)
-})
-</script>
 
 <style scoped>
 .dropdown {

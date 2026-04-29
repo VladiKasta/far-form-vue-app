@@ -1,12 +1,6 @@
-<script setup>
-import { onMounted } from 'vue'
+<script setup lang="ts">
 import Question from '../components/Question.vue'
 import CloseIcon from '../components/UI/CloseIcon.vue'
-
-onMounted(() => {
-	console.log('QuestionsLayout')
-})
-
 const emit = defineEmits(['update:step'])
 </script>
 

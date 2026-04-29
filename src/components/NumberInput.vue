@@ -1,24 +1,26 @@
-<script setup>
+<script setup lang="ts">
 import { vMaska } from 'maska/vue'
 import { computed } from 'vue'
 
-const props = defineProps({
-	modelValue: String,
-	showErrors: Boolean,
-})
+const props = withDefaults(
+	defineProps<{
+		modelValue: string
+		showErrors: boolean
+	}>(),
+	{
+		modelValue: '',
+		showErrors: false,
+	}
+)
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits<{
+	(e: 'update:modelValue', value: string): void
+}>()
 
 const value = computed({
 	get: () => props.modelValue,
 	set: v => emit('update:modelValue', v),
 })
-
-/* const onInput = e => {
-	const digits = e.target.value.replace(/\D/g, '').slice(0, 10)
-
-	emit('update:modelValue', digits)
-} */
 
 const isComplete = computed(() => {
 	const digits = props.modelValue.replace(/\D/g, '')

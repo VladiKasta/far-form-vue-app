@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
+import { StepConfig } from '../../interface/Step'
 
-// 👉 принимаем данные от родителя
-const props = defineProps({
-	steps: Array, // список всех шагов (вопросов)
-	step: Number, // текущий шаг
-})
+const props = defineProps<{
+	steps: StepConfig[]
+	step: number
+}>()
 
 // 👉 объявляем события для общения с родителем
 const emit = defineEmits(['setStep', 'getAnswer'])
@@ -13,8 +13,14 @@ const emit = defineEmits(['setStep', 'getAnswer'])
 // 👉 локальное состояние для radio (да/нет)
 const answer = ref('')
 
+type ResultAnswer = {
+	answer: string
+	comment?: string
+}
+
 // 👉 объект, который будем отправлять родителю
-const resultAnswer = reactive({
+const resultAnswer = reactive<ResultAnswer>({
+	answer: '', // yes / no
 	comment: '', // комментарий
 })
 
