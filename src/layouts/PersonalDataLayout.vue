@@ -228,13 +228,13 @@ const isFieldInvalid = <K extends keyof ValidatorFields>(field: K) => {
 									style="text-decoration: underline"
 									:class="{ 'text-red': showErrors && !formData.policy2 }"
 									download
-									href="../files/Условия_аккредитаци_монтажников_FAR.pdf"
+									href="./files/Условия_аккредитаци_монтажников_FAR.pdf"
 								>
 									условия аккредитации монтажников FAR
 								</a>
 								<a
 									download
-									href="../files/Условия_аккредитаци_монтажников_FAR.pdf"
+									href="./files/Условия_аккредитаци_монтажников_FAR.pdf"
 								>
 									<DownloadIcon />
 								</a>

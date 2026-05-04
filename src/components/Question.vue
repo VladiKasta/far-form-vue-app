@@ -9,7 +9,6 @@ import FirstQuestion from './questions/FirstQuestion.vue'
 import ForthQuestion from './questions/ForthQuestion.vue'
 import SecondQuestion from './questions/SecondQuestion.vue'
 import ThirdQuestion from './questions/ThirdQuestion.vue'
-import DownloadIcon from './UI/DownloadIcon.vue'
 import LeftArrowIcon from './UI/LeftArrowIcon.vue'
 
 const step = ref(1)
@@ -129,13 +128,13 @@ const nextStep = (e: MouseEvent) => {
 							style="text-decoration: underline"
 							:class="{ 'text-red': showErrors && !defaultAgreement2 }"
 							download
-							href="../files/Условия_аккредитаци_монтажников_FAR.pdf"
+							href="./files/Условия_аккредитаци_монтажников_FAR.pdf"
 						>
 							правилами аккредитации монтажников FAR
 						</a>
 						<a
 							download
-							href="../files/Условия_аккредитаци_монтажников_FAR.pdf"
+							href="./files/Условия_аккредитаци_монтажников_FAR.pdf"
 						>
 							<DownloadIcon />
 						</a>
