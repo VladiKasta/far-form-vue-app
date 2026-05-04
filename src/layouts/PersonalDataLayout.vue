@@ -215,6 +215,35 @@ const isFieldInvalid = <K extends keyof ValidatorFields>(field: K) => {
 			<div class="form-footer">
 				<div style="display: flex; flex-direction: column; gap: 5px">
 					<!-- первый -->
+
+					<Policy
+						v-model="formData.policy2"
+						:show-errors="showErrors"
+					>
+						<!-- второй -->
+						<template #policy2>
+							<div style="display: flex; align-items: center; gap: 5px; font-size: 14px">
+								Даю согласие на
+								<a
+									style="text-decoration: underline"
+									:class="{ 'text-red': showErrors && !formData.policy2 }"
+									download
+									href="../files/Условия_аккредитаци_монтажников_FAR.pdf"
+								>
+									условия аккредитации монтажников FAR
+								</a>
+								<a
+									download
+									href="../files/Условия_аккредитаци_монтажников_FAR.pdf"
+								>
+									<DownloadIcon />
+								</a>
+							</div>
+						</template>
+					</Policy>
+
+					<!-- второй -->
+
 					<Policy
 						v-model="formData.policy1"
 						:show-errors="showErrors"
@@ -230,27 +259,6 @@ const isFieldInvalid = <K extends keyof ValidatorFields>(field: K) => {
 								политику конфиденциальности
 							</a>
 							и публикацию контактных данных на карте монтажников на сайте far.ru.
-						</template>
-					</Policy>
-
-					<!-- второй -->
-					<Policy
-						v-model="formData.policy2"
-						:show-errors="showErrors"
-					>
-						<!-- второй -->
-						<template #policy2>
-							<div style="display: flex; align-items: center; gap: 5px; font-size: 14px">
-								Даю согласие на
-								<a
-									style="text-decoration: underline"
-									:class="{ 'text-red': showErrors && !formData.policy2 }"
-									href="#"
-								>
-									условия аккредитации монтажников FAR
-								</a>
-								<a href="#"><DownloadIcon /></a>
-							</div>
 						</template>
 					</Policy>
 				</div>

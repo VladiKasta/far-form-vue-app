@@ -1,22 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
-/* const props = defineProps({
-	modelValue: String,
-	options: {
-		type: Array,
-		required: true,
-	},
-	placeholder: {
-		type: String,
-		default: 'Выберите город',
-	},
-	showErrors: {
-		type: Boolean,
-		default: false,
-	},
-}) */
-
 const props = withDefaults(
 	defineProps<{
 		modelValue: string
@@ -31,7 +15,6 @@ const props = withDefaults(
 )
 
 const emit = defineEmits(['update:modelValue'])
-
 const isOpen = ref(false)
 const dropdown = ref<Node>()
 
