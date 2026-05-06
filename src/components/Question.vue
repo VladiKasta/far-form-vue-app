@@ -9,6 +9,7 @@ import FirstQuestion from './questions/FirstQuestion.vue'
 import ForthQuestion from './questions/ForthQuestion.vue'
 import SecondQuestion from './questions/SecondQuestion.vue'
 import ThirdQuestion from './questions/ThirdQuestion.vue'
+import TermsPolicy from './TermsPolicy.vue'
 import LeftArrowIcon from './UI/LeftArrowIcon.vue'
 
 const step = ref(1)
@@ -16,6 +17,17 @@ const answers = reactive<Record<number, AnswerData>>({})
 const defaultAgreement1 = ref(true)
 const defaultAgreement2 = ref(true)
 const showErrors = ref(false)
+
+const emit = defineEmits(['showTermsEvent'])
+
+const props = defineProps<{
+	showTerms: boolean
+}>()
+
+const showTerms = computed({
+	get: () => props.showTerms,
+	set: () => emit('showTermsEvent'),
+})
 
 const questionsComponents = [
 	FirstQuestion,
@@ -115,32 +127,7 @@ const nextStep = (e: MouseEvent) => {
 		<div style="display: flex; flex-direction: column; gap: 5px">
 			<!-- первый -->
 
-			<Policy
-				v-model="defaultAgreement2"
-				:show-errors="showErrors"
-				@addError="showErrors = true"
-			>
-				<!-- второй -->
-				<template #policy2>
-					<div style="display: flex; align-items: center; gap: 5px; font-size: 14px">
-						Ознакомьтесь с
-						<a
-							style="text-decoration: underline"
-							:class="{ 'text-red': showErrors && !defaultAgreement2 }"
-							download
-							href="./files/Условия_аккредитаци_монтажников_FAR.pdf"
-						>
-							правилами аккредитации монтажников FAR
-						</a>
-						<a
-							download
-							href="./files/Условия_аккредитаци_монтажников_FAR.pdf"
-						>
-							<DownloadIcon />
-						</a>
-					</div>
-				</template>
-			</Policy>
+			<TermsPolicy v-model="showTerms"></TermsPolicy>
 
 			<!-- второй -->
 			<Policy
@@ -148,7 +135,6 @@ const nextStep = (e: MouseEvent) => {
 				:show-errors="showErrors"
 				@addError="showErrors = true"
 			>
-				<!-- первый -->
 				<template #policy1>
 					Даю согласие на
 					<a

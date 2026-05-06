@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const props = defineProps({
-	modelValue: Boolean,
-	showErrors: Boolean,
-})
+const props = defineProps<{
+	modelValue: boolean
+	showErrors?: boolean
+}>()
 
-console.log('from Policy', props.modelValue)
-
-const emit = defineEmits(['update:modelValue', 'addError'])
+const emit = defineEmits(['update:modelValue'])
 
 const value = computed({
 	get: () => props.modelValue,
@@ -17,33 +15,18 @@ const value = computed({
 </script>
 
 <template>
-	<div
-		class="checkbox"
-		:class="{ 'text-red': showErrors && !value }"
-	>
+	<div class="checkbox">
 		<label class="custom-checkbox">
 			<input
-				v-model="value"
 				type="checkbox"
-				@change="emit('addError', !showErrors)"
+				v-model="value"
 			/>
 			<span class="checkmark"></span>
 		</label>
-		<label for="agreement">
-			<!-- Даю согласие на
-			<a
-				style="text-decoration: underline"
-				:class="{ 'text-red': showErrors && !value }"
-				href="#"
-			>
-				политику конфиденциальности
-			</a>
-			и публикацию контактных данных на карте монтажников на сайте far.ru. -->
+
+		<label>
 			<slot name="policy1"></slot>
-
 			<slot name="policy2"></slot>
-
-			<!-- <span>* - поля являются обязательными для заполнения.</span> -->
 		</label>
 	</div>
 </template>

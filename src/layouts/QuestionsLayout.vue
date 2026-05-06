@@ -1,10 +1,21 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import Question from '../components/Question.vue'
 import CloseIcon from '../components/UI/CloseIcon.vue'
+import TermsOfAccreditation from './TermsOfAccreditation.vue'
 const emit = defineEmits(['update:step'])
+
+const showTerms = ref(false)
 </script>
 
 <template>
+	<transition name="fade">
+		<TermsOfAccreditation
+			v-show="showTerms"
+			:v-model="showTerms"
+			@close="showTerms = false"
+		></TermsOfAccreditation>
+	</transition>
 	<div class="form-container">
 		<CloseIcon></CloseIcon>
 		<div class="form-heading">
@@ -30,6 +41,9 @@ const emit = defineEmits(['update:step'])
 			<span class="step active">Подтверждение опыта</span>
 		</div>
 
-		<Question></Question>
+		<Question
+			:show-terms="showTerms"
+			@showTermsEvent="showTerms = true"
+		></Question>
 	</div>
 </template>

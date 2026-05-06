@@ -34,11 +34,4 @@ const closeModal = () => {
 	</svg>
 </template>
 
-<style scoped>
-.close-icon {
-	cursor: pointer;
-	position: absolute;
-	top: 20px;
-	right: 20px;
-}
-</style>
+<style scoped></style>

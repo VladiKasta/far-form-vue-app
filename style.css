@@ -329,6 +329,28 @@ textarea {
 	transform: translateX(-40px);
 }
 
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+	opacity: 1;
+}
+
+.close-icon {
+	cursor: pointer;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+
 .question-text {
 	margin-bottom: 16px;
 	font-family: 'Roboto', sans-serif;

@@ -5,11 +5,12 @@ import EmailInput from '../components/EmailInput.vue'
 import FioInput from '../components/FioInput.vue'
 import NumberInput from '../components/NumberInput.vue'
 import Policy from '../components/Policy.vue'
+import TermsPolicy from '../components/TermsPolicy.vue'
 import CloseIcon from '../components/UI/CloseIcon.vue'
-import DownloadIcon from '../components/UI/DownloadIcon.vue'
 import LeftArrowIcon from '../components/UI/LeftArrowIcon.vue'
 import { cities } from '../composables/cities.js'
 import { FormData } from '../interface/FormData'
+import TermsOfAccreditation from './TermsOfAccreditation.vue'
 
 const showErrors = ref(false)
 
@@ -43,7 +44,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits(['update:form', 'update:step'])
-
+const showTerms = ref(false)
 const formData = computed({
 	get: () => props.form,
 	set: value => emit('update:form', value),
@@ -105,6 +106,14 @@ const isFieldInvalid = <K extends keyof ValidatorFields>(field: K) => {
 </script>
 
 <template>
+	<transition name="fade">
+		<TermsOfAccreditation
+			v-show="showTerms"
+			v-model="formData.policy2"
+			@close="showTerms = false"
+		></TermsOfAccreditation>
+	</transition>
+
 	<div class="form-container">
 		<CloseIcon></CloseIcon>
 		<div class="form-heading">
@@ -214,33 +223,10 @@ const isFieldInvalid = <K extends keyof ValidatorFields>(field: K) => {
 			</div>
 			<div class="form-footer">
 				<div style="display: flex; flex-direction: column; gap: 5px">
-					<!-- первый -->
-
-					<Policy
+					<TermsPolicy
 						v-model="formData.policy2"
-						:show-errors="showErrors"
-					>
-						<!-- второй -->
-						<template #policy2>
-							<div style="display: flex; align-items: center; gap: 5px; font-size: 14px">
-								Даю согласие на
-								<a
-									style="text-decoration: underline"
-									:class="{ 'text-red': showErrors && !formData.policy2 }"
-									download
-									href="./files/Условия_аккредитаци_монтажников_FAR.pdf"
-								>
-									условия аккредитации монтажников FAR
-								</a>
-								<a
-									download
-									href="./files/Условия_аккредитаци_монтажников_FAR.pdf"
-								>
-									<DownloadIcon />
-								</a>
-							</div>
-						</template>
-					</Policy>
+						@click="showTerms = true"
+					/>
 
 					<!-- второй -->
 
