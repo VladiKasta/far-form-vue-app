@@ -103,15 +103,39 @@ const isFieldInvalid = <K extends keyof ValidatorFields>(field: K) => {
 
 	return showErrors.value && !validator(value)
 }
+
+const handleTermsAccept = () => {
+	formData.value.policy2 = true
+	showTerms.value = false
+}
+
+const handleTermsClose = () => {
+	formData.value.policy2 = false
+	showTerms.value = false
+}
+
+const toggleTerms = () => {
+	if (formData.value.policy2) {
+		formData.value.policy2 = false
+	} else {
+		showTerms.value = true
+	}
+}
+
+/* const openTerms = () => {
+	if (!formData.value.policy2) {
+		showTerms.value = true
+	}
+} */
 </script>
 
 <template>
 	<transition name="fade">
 		<TermsOfAccreditation
 			v-show="showTerms"
-			v-model="formData.policy2"
-			@close="showTerms = false"
-		></TermsOfAccreditation>
+			@accept="handleTermsAccept"
+			@close="handleTermsClose"
+		/>
 	</transition>
 
 	<div class="form-container">
@@ -224,12 +248,11 @@ const isFieldInvalid = <K extends keyof ValidatorFields>(field: K) => {
 			<div class="form-footer">
 				<div style="display: flex; flex-direction: column; gap: 5px">
 					<TermsPolicy
-						v-model="formData.policy2"
-						@click="showTerms = true"
+						:model-value="formData.policy2"
+						@click="toggleTerms"
 					/>
 
 					<!-- второй -->
-
 					<Policy
 						v-model="formData.policy1"
 						:show-errors="showErrors"

@@ -6,16 +6,30 @@ import TermsOfAccreditation from './TermsOfAccreditation.vue'
 const emit = defineEmits(['update:step'])
 
 const showTerms = ref(false)
+const agreementAccepted = ref(true) // по умолчанию true
+
+const openTerms = () => {
+	showTerms.value = true
+}
+
+const handleAccept = () => {
+	agreementAccepted.value = true
+	showTerms.value = false
+}
+
+const handleClose = () => {
+	agreementAccepted.value = false
+	showTerms.value = false
+}
 </script>
 
 <template>
-	<transition name="fade">
-		<TermsOfAccreditation
-			v-show="showTerms"
-			:v-model="showTerms"
-			@close="showTerms = false"
-		></TermsOfAccreditation>
-	</transition>
+	<TermsOfAccreditation
+		v-if="showTerms"
+		@accept="handleAccept"
+		@close="handleClose"
+	/>
+
 	<div class="form-container">
 		<CloseIcon></CloseIcon>
 		<div class="form-heading">
@@ -42,8 +56,8 @@ const showTerms = ref(false)
 		</div>
 
 		<Question
-			:show-terms="showTerms"
-			@showTermsEvent="showTerms = true"
-		></Question>
+			v-model:agreement="agreementAccepted"
+			@open-terms="openTerms"
+		/>
 	</div>
 </template>

@@ -1,44 +1,26 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
 	modelValue: boolean
 }>()
 
-const emit = defineEmits(['update:modelValue', 'accept'])
-
-const onChange = (e: Event) => {
-	const target = e.target as HTMLInputElement
-	emit('update:modelValue', target.checked)
-}
+const emit = defineEmits(['click'])
 </script>
 
 <template>
-	<div class="checkbox">
-		<label class="custom-checkbox">
+	<div
+		class="checkbox"
+		@click="emit('click')"
+	>
+		<div class="custom-checkbox">
 			<input
 				type="checkbox"
 				:checked="modelValue"
-				@change="onChange"
+				readonly
 			/>
-			<span class="checkmark"></span>
-		</label>
 
-		<label>
-			<div style="display: flex; align-items: center; gap: 5px; font-size: 14px">
-				Даю согласие на
-				<a
-					style="text-decoration: underline"
-					download
-					href="https://far.qscape.ru/local/js/vue-app/dist/files/Условия_аккредитаци_монтажников_FAR.pdf"
-				>
-					условия аккредитации монтажников FAR
-				</a>
-				<a
-					download
-					href="https://far.qscape.ru/local/js/vue-app/dist/files/Условия_аккредитаци_монтажников_FAR.pdf"
-				>
-					<DownloadIcon />
-				</a>
-			</div>
-		</label>
+			<span class="checkmark"></span>
+		</div>
+
+		<div>Даю согласие на условия аккредитации монтажников FAR</div>
 	</div>
 </template>

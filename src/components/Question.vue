@@ -15,19 +15,22 @@ import LeftArrowIcon from './UI/LeftArrowIcon.vue'
 const step = ref(1)
 const answers = reactive<Record<number, AnswerData>>({})
 const defaultAgreement1 = ref(true)
-const defaultAgreement2 = ref(true)
+
 const showErrors = ref(false)
 
-const emit = defineEmits(['showTermsEvent'])
+const emit = defineEmits(['open-terms', 'update:agreement'])
+
+const toggleAgreement = () => {
+	if (props.agreement) {
+		emit('update:agreement', false)
+	} else {
+		emit('open-terms')
+	}
+}
 
 const props = defineProps<{
-	showTerms: boolean
+	agreement: boolean
 }>()
-
-const showTerms = computed({
-	get: () => props.showTerms,
-	set: () => emit('showTermsEvent'),
-})
 
 const questionsComponents = [
 	FirstQuestion,
@@ -71,7 +74,7 @@ const isStepValid = computed(() => {
 
 // 👉 кнопка
 const allowNext = computed(() => {
-	return isStepValid.value && defaultAgreement1.value && defaultAgreement2.value
+	return isStepValid.value && defaultAgreement1.value && props.agreement
 })
 
 // 👉 просто сохраняем данные
@@ -83,7 +86,7 @@ const handleAnswer = (data: AnswerData) => {
 const nextStep = (e: MouseEvent) => {
 	e.preventDefault()
 
-	if (!isStepValid.value || !defaultAgreement1.value || !defaultAgreement2.value) {
+	if (!isStepValid.value || !defaultAgreement1.value || !props.agreement) {
 		showErrors.value = true
 		return
 	}
@@ -127,7 +130,11 @@ const nextStep = (e: MouseEvent) => {
 		<div style="display: flex; flex-direction: column; gap: 5px">
 			<!-- первый -->
 
-			<TermsPolicy v-model="showTerms"></TermsPolicy>
+			<!-- <TermsPolicy></TermsPolicy> -->
+			<TermsPolicy
+				:model-value="props.agreement"
+				@click="toggleAgreement"
+			/>
 
 			<!-- второй -->
 			<Policy

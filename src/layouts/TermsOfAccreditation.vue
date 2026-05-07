@@ -2,20 +2,22 @@
 import { ref } from 'vue'
 
 const isBottomReached = ref(false)
-const emit = defineEmits(['update:modelValue', 'close'])
+const emit = defineEmits(['accept', 'close'])
 
 const handleAccept = () => {
-	emit('update:modelValue', true)
-	emit('close')
+	emit('accept')
 }
 
 const handleClose = () => {
-	emit('update:modelValue', false)
 	emit('close')
 }
 
-const handleScrollEnd = () => {
-	isBottomReached.value = true
+const handleScroll = (e: Event) => {
+	const el = e.target as HTMLElement
+
+	if (el.scrollTop + el.clientHeight >= el.scrollHeight - 5) {
+		isBottomReached.value = true
+	}
 }
 </script>
 
@@ -56,7 +58,7 @@ const handleScrollEnd = () => {
 
 		<section
 			class="terms-wrapper"
-			@scrollend="handleScrollEnd"
+			@scroll="handleScroll"
 		>
 			<p>
 				Условия аккредитации монтажников и правила предоставления увеличенного срока гарантии + 3
@@ -85,6 +87,7 @@ const handleScrollEnd = () => {
 		<button
 			@click="handleAccept"
 			class="form-btn"
+			:disabled="!isBottomReached"
 			:class="{ active: isBottomReached }"
 		>
 			Согласен
