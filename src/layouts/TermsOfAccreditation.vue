@@ -22,7 +22,7 @@ const handleScroll = (e: Event) => {
 </script>
 
 <template>
-	<div class="form-container">
+	<div class="form-container-terms">
 		<span
 			class="close-icon"
 			@click="handleClose"
@@ -100,15 +100,15 @@ const handleScroll = (e: Event) => {
 
 							<div class="socials">
 								<img
-									src="./icons/tg.png"
+									src="https://far.qscape.ru/local/js/vue-app/dist/icons/tg.png"
 									alt="Telegram"
 								/>
 								<img
-									src="./icons/max.png"
+									src="https://far.qscape.ru/local/js/vue-app/dist/icons/max.png"
 									alt="MAX"
 								/>
 								<img
-									src="./icons/vk.png"
+									src="https://far.qscape.ru/local/js/vue-app/dist/icons/vk.png"
 									alt="VK"
 								/>
 							</div>
@@ -171,7 +171,7 @@ const handleScroll = (e: Event) => {
 </template>
 
 <style scoped>
-.form-container {
+.form-container-terms {
 	position: absolute;
 	height: 100%;
 	max-height: 468px;
