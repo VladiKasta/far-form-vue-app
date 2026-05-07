@@ -99,18 +99,26 @@ const handleScroll = (e: Event) => {
 							<span>Быть подписанным на официальные страницы FAR в социальных сетях</span>
 
 							<div class="socials">
-								<img
-									src="https://far.qscape.ru/local/js/vue-app/dist/icons/tg.png"
-									alt="Telegram"
-								/>
-								<img
-									src="https://far.qscape.ru/local/js/vue-app/dist/icons/max.png"
-									alt="MAX"
-								/>
-								<img
-									src="https://far.qscape.ru/local/js/vue-app/dist/icons/vk.png"
-									alt="VK"
-								/>
+								<a href="https://t.me/FAR_ru_FAR">
+									<img
+										src="https://far.qscape.ru/local/js/vue-app/dist/icons/tg.png"
+										alt="Telegram"
+									/>
+								</a>
+
+								<a href="https://max.ru/join/oDWy6uVI7gQStHf7tBz91wF4pBhHTzTjEQ47Tsd-EOM">
+									<img
+										src="https://far.qscape.ru/local/js/vue-app/dist/icons/max.png"
+										alt="MAX"
+									/>
+								</a>
+
+								<a href="https://vk.com/far_russia">
+									<img
+										src="https://far.qscape.ru/local/js/vue-app/dist/icons/vk.png"
+										alt="VK"
+									/>
+								</a>
 							</div>
 						</li>
 
