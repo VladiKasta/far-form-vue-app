@@ -221,7 +221,6 @@ const handleScroll = (e: Event) => {
 	font-size: 18px;
 	font-weight: 700;
 	text-align: center;
-	color: #355796;
 	line-height: 1.5;
 	margin-bottom: 10px;
 }
@@ -229,8 +228,6 @@ const handleScroll = (e: Event) => {
 .terms-content h2 {
 	font-size: 20px;
 	font-weight: 700;
-
-	color: #355796;
 	display: block;
 	margin-bottom: 40px !important;
 }
