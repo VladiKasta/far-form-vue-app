@@ -133,6 +133,7 @@ const nextStep = (e: MouseEvent) => {
 			<!-- <TermsPolicy></TermsPolicy> -->
 			<TermsPolicy
 				:model-value="props.agreement"
+				:show-errors="showErrors"
 				@click="toggleAgreement"
 			/>
 
@@ -143,15 +144,16 @@ const nextStep = (e: MouseEvent) => {
 				@addError="showErrors = true"
 			>
 				<template #policy1>
-					Даю согласие на
-					<a
-						style="text-decoration: underline"
-						:class="{ 'text-red': showErrors && !defaultAgreement1 }"
-						href="#"
-					>
-						политику конфиденциальности
-					</a>
-					и публикацию контактных данных на карте монтажников на сайте far.ru.
+					<div :class="{ 'text-red': showErrors && !defaultAgreement1 }">
+						Даю согласие на
+						<a
+							style="text-decoration: underline"
+							href="#"
+						>
+							политику конфиденциальности
+						</a>
+						и публикацию контактных данных на карте монтажников на сайте far.ru.
+					</div>
 				</template>
 			</Policy>
 		</div>

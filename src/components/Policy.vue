@@ -24,7 +24,7 @@ const value = computed({
 			<span class="checkmark"></span>
 		</label>
 
-		<label>
+		<label :class="{ 'text-red': showErrors && !modelValue }">
 			<slot name="policy1"></slot>
 			<slot name="policy2"></slot>
 		</label>

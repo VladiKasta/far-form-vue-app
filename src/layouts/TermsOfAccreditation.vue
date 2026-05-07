@@ -52,22 +52,19 @@ const handleScroll = (e: Event) => {
 			</svg>
 		</span>
 
-		<div class="form-heading">
+		<!-- <div class="form-heading">
 			<h2>Условия аккредитации монтажника FAR</h2>
-		</div>
+		</div> -->
 
 		<section
 			class="terms-wrapper"
 			@scroll="handleScroll"
 		>
 			<div class="terms-content">
-				<h1>
-					Условия аккредитации монтажников и
-					<br />
-					правила предоставления увеличенного срока гарантии
-				</h1>
-
-				<h2>+ 3 года на продукцию FAR</h2>
+				<h2>
+					Условия аккредитации монтажников и правила предоставления увеличенного срока гарантии (+ 3
+					года) на продукцию FAR
+				</h2>
 
 				<section class="terms-section">
 					<h3>Преференции для аккредитованных монтажников FAR:</h3>
@@ -230,11 +227,12 @@ const handleScroll = (e: Event) => {
 }
 
 .terms-content h2 {
-	font-size: 28px;
+	font-size: 20px;
 	font-weight: 700;
-	text-align: center;
+
 	color: #355796;
-	margin-bottom: 40px;
+	display: block;
+	margin-bottom: 40px !important;
 }
 
 .terms-section {
@@ -270,7 +268,7 @@ const handleScroll = (e: Event) => {
 .social-line {
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: start;
 	gap: 20px;
 }
 

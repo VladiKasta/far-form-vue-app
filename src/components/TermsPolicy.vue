@@ -2,6 +2,7 @@
 import DownloadIcon from './UI/DownloadIcon.vue'
 defineProps<{
 	modelValue: boolean
+	showErrors: boolean
 }>()
 
 const emit = defineEmits(['click'])
@@ -22,11 +23,12 @@ const emit = defineEmits(['click'])
 			<span class="checkmark"></span>
 		</div>
 
-		<label>
+		<label :class="{ 'text-red': showErrors && !modelValue }">
 			<div style="display: flex; align-items: center; gap: 5px; font-size: 14px">
 				Даю согласие на
 				<a
 					style="text-decoration: underline"
+					:class="{ 'text-red': showErrors && !modelValue }"
 					download
 					href="https://far.qscape.ru/local/js/vue-app/dist/files/Условия_аккредитаци_монтажников_FAR.pdf"
 				>

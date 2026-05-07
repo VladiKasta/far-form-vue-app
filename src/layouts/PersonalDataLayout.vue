@@ -249,6 +249,7 @@ const toggleTerms = () => {
 				<div style="display: flex; flex-direction: column; gap: 5px">
 					<TermsPolicy
 						:model-value="formData.policy2"
+						:show-errors="showErrors"
 						@click="toggleTerms"
 					/>
 
