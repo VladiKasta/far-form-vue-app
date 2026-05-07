@@ -203,7 +203,7 @@ const handleScroll = (e: Event) => {
 	text-align: left;
 	width: 100%;
 	margin-top: 20px;
-	max-height: 300px;
+	max-height: 80%;
 	overflow-y: scroll;
 }
 
