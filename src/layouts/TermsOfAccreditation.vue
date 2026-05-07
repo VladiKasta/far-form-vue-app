@@ -78,7 +78,15 @@ const handleScroll = (e: Event) => {
 							участия в мероприятиях FAR.
 						</li>
 
-						<li>Размещение контактного блока на монобрендовом сайте FAR</li>
+						<li>
+							Размещение контактного блока на монобрендовом
+							<a
+								style="color: #363535"
+								href="https://far.ru"
+							>
+								сайте FAR
+							</a>
+						</li>
 
 						<li>Увеличенная гарантия (+3 года) на смонтированную трубопроводную арматуру FAR.</li>
 
@@ -182,7 +190,7 @@ const handleScroll = (e: Event) => {
 .form-container-terms {
 	position: absolute;
 	height: 100%;
-	max-height: 468px;
+	max-height: 487px;
 	width: 100%;
 	z-index: 10;
 	background: #fff;
@@ -196,7 +204,7 @@ const handleScroll = (e: Event) => {
 
 .terms-wrapper {
 	text-align: left;
-	width: 80%;
+	width: 100%;
 	margin-top: 20px;
 	max-height: 300px;
 	overflow-y: scroll;
@@ -262,7 +270,7 @@ const handleScroll = (e: Event) => {
 .social-line {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: center;
 	gap: 20px;
 }
 
