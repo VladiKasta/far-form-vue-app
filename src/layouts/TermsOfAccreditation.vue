@@ -193,7 +193,7 @@ const handleScroll = (e: Event) => {
 	background: #fff;
 	border-radius: 8px;
 	padding: 35px 60px;
-	width: 100%;
+	width: 95%;
 	max-width: 1020px;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 	text-align: center;
@@ -209,6 +209,7 @@ const handleScroll = (e: Event) => {
 
 .form-btn {
 	margin-left: auto;
+	margin-top: 20px;
 }
 
 .terms-content {
@@ -285,7 +286,9 @@ const handleScroll = (e: Event) => {
 @media (max-width: 992px) {
 	.form-container-terms {
 		padding: 20px;
-		max-height: 601px;
+		width: 95%;
+		height: 95%;
+		max-height: 704px;
 	}
 
 	.terms-wrapper {

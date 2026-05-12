@@ -2,6 +2,9 @@
 	.form-container {
 		padding: 20px 8px;
 		width: 96%;
+		max-height: 704px;
+		height: 95%;
+		overflow-y: auto;
 	}
 	.form-step {
 		display: block;
@@ -41,7 +44,7 @@
 	}
 
 	.form-footer {
-		flex-direction: column;
+		flex-direction: column-reverse;
 		gap: 24px;
 	}
 

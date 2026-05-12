@@ -146,6 +146,7 @@ onBeforeUnmount(() => {
 	.dropdown__selected {
 		font-size: 16px;
 		padding: 6px 9px;
+		height: 33px;
 	}
 }
 </style>

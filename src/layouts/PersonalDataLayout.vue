@@ -70,10 +70,10 @@ const validate = (e: MouseEvent) => {
 	e.preventDefault()
 	showErrors.value = true
 
-	/* 	if (isValid.value) {
-		emit('update:step', 2)
-	} */
-	setStep(2)
+	if (isValid.value) {
+		/* emit('update:step', 2) */
+		setStep(2)
+	}
 }
 </script>
 
@@ -225,7 +225,6 @@ const validate = (e: MouseEvent) => {
 					class="form-btn"
 					@click="e => validate(e)"
 					:class="{ active: isValid }"
-					:disabled="!isValid"
 				>
 					Подтверждение опыта
 
