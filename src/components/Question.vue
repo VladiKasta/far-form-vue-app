@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, ref } from 'vue'
+import sendQuizData from '../bitrixApi/sendQuizData'
 import { steps } from '../composables/questionsData'
 import { AnswerData } from '../interface/Answer'
+import { BitrixAnswers, BitrixFormData, BitrixPayload } from '../interface/BitrixFormData'
+import { QuizFormData } from '../interface/FormData'
 import { StepConfig } from '../interface/Step'
+import SuccessLayout from '../layouts/SuccessLayout.vue'
+import { useQuizStore } from '../stores/aswers'
 import Policy from './Policy.vue'
 import FifthQuestion from './questions/FifthQuestion.vue'
 import FirstQuestion from './questions/FirstQuestion.vue'
@@ -10,13 +15,23 @@ import ForthQuestion from './questions/ForthQuestion.vue'
 import SecondQuestion from './questions/SecondQuestion.vue'
 import ThirdQuestion from './questions/ThirdQuestion.vue'
 import TermsPolicy from './TermsPolicy.vue'
+import CloseIcon from './UI/CloseIcon.vue'
 import LeftArrowIcon from './UI/LeftArrowIcon.vue'
 
-const step = ref(1)
-const answers = reactive<Record<number, AnswerData>>({})
-const defaultAgreement1 = ref(true)
+export interface QuizState {
+	formData: BitrixFormData
+	answers: Record<number, AnswerData>
+}
 
+const quizStore = useQuizStore()
+const submitStatus = ref<'idle' | 'success' | 'error'>('idle')
+const step = ref(1)
+const defaultAgreement1 = ref(true)
 const showErrors = ref(false)
+
+const props = defineProps<{
+	agreement: boolean
+}>()
 
 const emit = defineEmits(['open-terms', 'update:agreement'])
 
@@ -28,10 +43,6 @@ const toggleAgreement = () => {
 	}
 }
 
-const props = defineProps<{
-	agreement: boolean
-}>()
-
 const questionsComponents = [
 	FirstQuestion,
 	SecondQuestion,
@@ -40,19 +51,19 @@ const questionsComponents = [
 	FifthQuestion,
 ]
 
-// 👉 текущие данные шага
+// 👉 текущие данные шага (из стора)
 const currentData = computed(() => {
-	return answers[step.value] || {}
+	return quizStore.answers[step.value] || {}
 })
 
-// 👉 получить обязательные поля
+// 👉 обязательные поля
 const getRequiredFields = (stepConfig: StepConfig, data: AnswerData) => {
 	if (!stepConfig.required) return []
 
 	return typeof stepConfig.required === 'function' ? stepConfig.required(data) : stepConfig.required
 }
 
-// 👉 валидация
+// 👉 валидация шага
 const isStepValid = computed(() => {
 	const data = currentData.value
 	const currentStep = steps[step.value - 1]
@@ -72,17 +83,16 @@ const isStepValid = computed(() => {
 	})
 })
 
-// 👉 кнопка
 const allowNext = computed(() => {
 	return isStepValid.value && defaultAgreement1.value && props.agreement
 })
 
-// 👉 просто сохраняем данные
+// 👉 сохраняем ответ в Pinia
 const handleAnswer = (data: AnswerData) => {
-	answers[step.value] = data
+	quizStore.setAnswer(step.value, data)
 }
 
-// 👉 переход дальше
+// 👉 следующий шаг
 const nextStep = (e: MouseEvent) => {
 	e.preventDefault()
 
@@ -94,15 +104,169 @@ const nextStep = (e: MouseEvent) => {
 	showErrors.value = false
 
 	if (step.value === 5) {
-		console.log(answers)
+		console.log(quizStore.answers)
 		return
 	}
 
 	step.value++
 }
+
+const mapToBitrix = (form: QuizFormData): BitrixFormData => {
+	return {
+		form_text_61: form.fio, // ФИО
+		form_text_62: form.phone, // телефон
+		form_text_63: form.city, // город
+		form_text_64: form.email, // email
+		form_text_65: form.portfolioLink, // соцсети / портфолио
+		form_text_66: form.site, // сайт
+
+		form_checkbox_AGREE_CONDITIONS_OF_ACCREDITATION: form.policy1 ? ['67'] : [],
+		form_checkbox_AGREE_PRIVACY_POLICY: form.policy2 ? ['68'] : [],
+	}
+}
+
+const mapAnswersToBitrix = (answers: Record<number, AnswerData>): BitrixAnswers => {
+	const result: BitrixAnswers = {}
+
+	// 1 вопрос
+	if (answers[1]) {
+		result.form_checkbox_5_YEARS_OF_EXPERIENCE = answers[1].answer === 'yes' ? ['69'] : ['70']
+
+		if (answers[1].files?.length) {
+			result.photos_1 = answers[1].files as File[]
+		}
+	}
+
+	// 2 вопрос
+	if (answers[2]) {
+		result.form_checkbox_COMPLETE_AND_SELECT_EQUIPMENT =
+			answers[2].answer === 'yes' ? ['84'] : ['85']
+
+		if (answers[2].comment) {
+			result.form_textarea_86 = answers[2].comment
+		}
+	}
+
+	// 3 вопрос
+	if (answers[3]?.brands) {
+		result.form_textarea_87 = answers[3].brands
+	}
+
+	// 4 вопрос
+	if (answers[4]) {
+		result.form_checkbox_USED_FAR = answers[4].answer === 'yes' ? ['88'] : ['89']
+
+		if (answers[4].files) {
+			result.photos_2 = answers[4].files as File[]
+		}
+	}
+
+	// 5 вопрос
+	if (answers[5]?.message) {
+		result.form_textarea_100 = answers[5].message
+	}
+
+	return result
+}
+
+const sendData = async () => {
+	try {
+		const payload: BitrixPayload = {
+			...mapToBitrix(quizStore.formData),
+			...mapAnswersToBitrix(quizStore.answers),
+		}
+
+		const res: response = await sendQuizData(payload)
+
+		console.log('SERVER RESPONSE:', res)
+
+		type response = {
+			success: boolean
+		}
+
+		if (res?.success == true) {
+			submitStatus.value = 'success'
+		} else {
+			console.warn('Bitrix error response:', res)
+			submitStatus.value = 'error'
+		}
+	} catch (error) {
+		console.error(error)
+
+		submitStatus.value = 'error'
+	}
+}
+
+const close = () => {
+	console.log('His')
+	document.body.style.overflow = 'auto'
+	const overlay = document.querySelector('.overlay') as HTMLElement
+	const form = document.querySelector('.form-container') as HTMLElement
+	const success = document.querySelector('.modal') as HTMLElement
+
+	success.style.display = 'none'
+	form.style.display = 'none'
+	overlay.style.display = 'none'
+
+	useQuizStore().reset()
+	useQuizStore().setStep(1)
+}
 </script>
 
 <template>
+	<SuccessLayout v-if="submitStatus !== 'idle'">
+		<template
+			v-if="submitStatus === 'success'"
+			#success
+		>
+			<div class="modal">
+				<CloseIcon @click="close"></CloseIcon>
+				<p class="title">Спасибо! Ваша заявка принята в работу.</p>
+
+				<p class="text">
+					После проверки вы сможете получать заявки от клиентов и доступ к обучению. Мы свяжемся с
+					вами в течение 3-х рабочих дней.
+				</p>
+
+				<button
+					class="btn"
+					@click="close"
+				>
+					ПОНЯТНО
+				</button>
+			</div>
+		</template>
+
+		<template
+			v-else
+			#fail
+		>
+			<div class="modal">
+				<CloseIcon @click="close"></CloseIcon>
+				<p class="title">Не удалось отправить заявку</p>
+
+				<p class="text">
+					Произошла ошибка при отправке формы. Попробуйте ещё раз через несколько минут.
+				</p>
+
+				<div class="actions">
+					<button
+						class="btn"
+						@click="sendData"
+					>
+						Повторить
+					</button>
+
+					<button
+						class="btn btn-secondary"
+						@click="submitStatus = 'idle'"
+					>
+						Закрыть
+					</button>
+				</div>
+			</div>
+		</template>
+	</SuccessLayout>
 	<div class="quiz">
 		<div class="quiz-card">
 			<div class="steps">
@@ -120,7 +284,7 @@ const nextStep = (e: MouseEvent) => {
 				:is="questionsComponents[step - 1]"
 				:step="step"
 				:steps="steps"
-				:modelValue="answers[step] || {}"
+				:modelValue="quizStore.answers[step] || {}"
 				@getAnswer="handleAnswer"
 			/>
 		</div>
@@ -128,16 +292,12 @@ const nextStep = (e: MouseEvent) => {
 
 	<div class="form-footer">
 		<div style="display: flex; flex-direction: column; gap: 5px">
-			<!-- первый -->
-
-			<!-- <TermsPolicy></TermsPolicy> -->
 			<TermsPolicy
 				:model-value="props.agreement"
 				:show-errors="showErrors"
 				@click="toggleAgreement"
 			/>
 
-			<!-- второй -->
 			<Policy
 				v-model="defaultAgreement1"
 				:show-errors="showErrors"
@@ -159,12 +319,24 @@ const nextStep = (e: MouseEvent) => {
 		</div>
 
 		<button
+			v-if="step < 5"
 			class="form-btn"
 			:disabled="!allowNext"
 			:class="{ active: allowNext }"
 			@click="nextStep"
 		>
-			{{ step < 5 ? 'Далее' : 'Отправить заявку' }}
+			{{ step < questionsComponents.length ? 'Далее' : 'Отправить заявку' }}
+			<LeftArrowIcon />
+		</button>
+
+		<button
+			v-else
+			class="form-btn"
+			:disabled="!allowNext"
+			:class="{ active: step === questionsComponents.length }"
+			@click="sendData"
+		>
+			Отправить заявку
 			<LeftArrowIcon />
 		</button>
 	</div>
@@ -262,5 +434,53 @@ const nextStep = (e: MouseEvent) => {
 	color: #363535;
 	z-index: 3;
 	margin-left: 0;
+}
+
+.modal {
+	width: 90%;
+	max-width: 640px;
+	background: #fff;
+	border-radius: 24px;
+	padding: 48px 32px;
+	text-align: center;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+	display: block !important;
+	position: relative;
+}
+
+.title {
+	font-size: 20px;
+	font-weight: 600;
+	color: #2b2b2b;
+	margin-bottom: 16px;
+}
+
+.text {
+	font-size: 16px;
+	line-height: 1.5;
+	color: #4b4b4b;
+	margin-bottom: 32px;
+}
+
+.btn {
+	background: #008a3c;
+	color: #fff;
+	border: none;
+	border-radius: 12px;
+	padding: 12px 32px;
+	font-weight: 600;
+	font-size: 14px;
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+.btn:hover {
+	background: #007533;
+}
+
+.actions {
+	display: flex;
+	gap: 16px;
+	justify-content: center;
 }
 </style>

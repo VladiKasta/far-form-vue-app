@@ -1,4 +1,4 @@
-export interface FormData {
+export interface QuizFormData {
 	fio: string
 	city: string
 	portfolioLink: string

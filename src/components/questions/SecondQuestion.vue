@@ -103,4 +103,10 @@ watch(
 	font-family: 'Roboto', sans-serif;
 	font-weight: 600;
 }
+
+@media (max-width: 992px) {
+	.content .comment-wrapper {
+		padding-left: 0;
+	}
+}
 </style>

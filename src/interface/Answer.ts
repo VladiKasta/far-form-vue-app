@@ -1,8 +1,9 @@
 type AnswerData = {
 	answer: string
 	comment?: string
+	message?: string
 	files?: unknown[]
-	brands?: string[]
+	brands?: string
 }
 
 type AnswerKey = keyof AnswerData

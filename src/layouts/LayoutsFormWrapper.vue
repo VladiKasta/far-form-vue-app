@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
-import { FormData } from '../interface/FormData'
+import { onMounted } from 'vue'
+import { useQuizStore } from '../stores/aswers'
 import PersonalDataLayout from './PersonalDataLayout.vue'
 import QuestionsLayout from './QuestionsLayout.vue'
 
@@ -8,7 +8,7 @@ onMounted(() => {
 	console.log('bitrix extension + vue mounted')
 })
 
-const formData = reactive<FormData>({
+/* const formData = reactive<QuizFormData>({
 	fio: '',
 	city: '',
 	portfolioLink: '',
@@ -17,15 +17,16 @@ const formData = reactive<FormData>({
 	site: '',
 	policy1: false,
 	policy2: false,
-})
+}) */
 
-const layoutStep = ref<number>(1)
+const formData = useQuizStore().formData
+const layoutStep = useQuizStore()
 </script>
 
 <template>
 	<Transition name="slide">
 		<PersonalDataLayout
-			v-if="layoutStep === 1"
+			v-if="layoutStep.step === 1"
 			v-model:step="layoutStep"
 			v-model:form="formData"
 		></PersonalDataLayout>

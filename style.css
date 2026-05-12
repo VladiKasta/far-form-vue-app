@@ -1,5 +1,5 @@
 /* Общие стили */
-* {
+/* * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -12,7 +12,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-}
+} */
 
 input {
 	outline: none;
@@ -287,7 +287,7 @@ textarea {
 	font-weight: 500;
 	font-style: Medium;
 	font-size: 14px;
-	leading-trim: NONE;
+
 	line-height: 100%;
 	letter-spacing: 0%;
 	text-align: center;

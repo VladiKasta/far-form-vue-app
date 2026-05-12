@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import Question from '../components/Question.vue'
 import CloseIcon from '../components/UI/CloseIcon.vue'
+import { useQuizStore } from '../stores/aswers'
 import TermsOfAccreditation from './TermsOfAccreditation.vue'
 const emit = defineEmits(['update:step'])
 
@@ -41,7 +42,7 @@ const handleClose = () => {
 		<div class="progress-bar">
 			<span
 				class="step filled"
-				@click="emit('update:step', 1)"
+				@click="useQuizStore().setStep(1)"
 			>
 				Контактные данные
 			</span>

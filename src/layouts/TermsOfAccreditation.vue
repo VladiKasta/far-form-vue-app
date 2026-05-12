@@ -78,7 +78,7 @@ const handleScroll = (e: Event) => {
 						<li>
 							Размещение контактного блока на монобрендовом
 							<a
-								style="color: #363535"
+								style="color: #008837 !important"
 								href="https://far.ru"
 							>
 								сайте FAR
@@ -203,7 +203,7 @@ const handleScroll = (e: Event) => {
 	text-align: left;
 	width: 100%;
 	margin-top: 20px;
-	max-height: 300px;
+	max-height: 85%;
 	overflow-y: scroll;
 }
 
@@ -280,5 +280,18 @@ const handleScroll = (e: Event) => {
 	width: 28px;
 	height: 28px;
 	object-fit: contain;
+}
+
+@media (max-width: 992px) {
+	.form-container-terms {
+		padding: 20px;
+		max-height: 601px;
+	}
+
+	.terms-wrapper {
+		padding: 10px;
+		margin-top: 70px;
+		max-height: 75%;
+	}
 }
 </style>

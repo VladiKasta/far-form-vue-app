@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import CitySelect from '../components/CitySelect.vue'
 import EmailInput from '../components/EmailInput.vue'
 import FioInput from '../components/FioInput.vue'
@@ -9,124 +9,72 @@ import TermsPolicy from '../components/TermsPolicy.vue'
 import CloseIcon from '../components/UI/CloseIcon.vue'
 import LeftArrowIcon from '../components/UI/LeftArrowIcon.vue'
 import { cities } from '../composables/cities.js'
-import { FormData } from '../interface/FormData'
+import { useQuizStore } from '../stores/aswers'
 import TermsOfAccreditation from './TermsOfAccreditation.vue'
 
+const quizStore = useQuizStore()
+const setStep = useQuizStore().setStep
+
 const showErrors = ref(false)
-
-onMounted(() => {
-	console.log('bitrix extension + vue mounted')
-})
-
-const slots = defineSlots<{
-	policy1?: () => any
-	policy2?: () => any
-}>()
-
-const props = withDefaults(
-	defineProps<{
-		form?: FormData
-		step: number
-	}>(),
-	{
-		form: (): FormData => ({
-			fio: '',
-			city: '',
-			portfolioLink: '',
-			phone: '',
-			email: '',
-			site: '',
-			policy1: false,
-			policy2: false,
-		}),
-		step: 1,
-	}
-)
-
-const emit = defineEmits(['update:form', 'update:step'])
 const showTerms = ref(false)
-const formData = computed({
-	get: () => props.form,
-	set: value => emit('update:form', value),
-})
+const emit = defineEmits(['update:step'])
 
-const validate = (e: MouseEvent) => {
-	e.preventDefault()
-	showErrors.value = true
+const formData = quizStore.formData
 
-	if (isValid.value) {
-		emit('update:step', 2)
-	}
-	console.log(validFieldsCount.value)
-}
+const getDigits = (phone: string) => phone.replace(/\D/g, '')
 
+// VALIDATION
 const isValid = computed(() => {
-	console.log(formData)
 	return (
-		formData.value.fio.trim().length > 0 &&
-		formData.value.city.trim().length > 0 &&
-		formData.value.phone.replace(/\D/g, '').length >= 11 &&
-		/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.value.email) &&
-		formData.value.policy1 &&
-		formData.value.policy2
+		formData.fio.trim().length > 0 &&
+		formData.city.trim().length > 0 &&
+		getDigits(formData.phone).length >= 11 &&
+		/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
+		formData.policy1 &&
+		formData.policy2
 	)
 })
 
 const validFieldsCount = computed(() => {
 	let count = 0
-	if (formData.value.fio.trim().length > 0) count++
-	if (formData.value.city.trim().length > 0) count++
-	const digits = formData.value.phone.replace(/\D/g, '')
-	if (digits.length === 11) count++
-	if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.value.email)) count++
-	if (formData.value.policy1 && formData.value.policy2) count++
-
+	if (formData.fio.trim()) count++
+	if (formData.city.trim()) count++
+	if (getDigits(formData.phone).length === 11) count++
+	if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) count++
+	if (formData.policy1 && formData.policy2) count++
 	return count
 })
 
-type ValidatorFields = Omit<FormData, 'portfolioLink' | 'site'>
-const getDigits = (phone: string) => phone.replace(/\D/g, '')
-const validators: {
-	[K in keyof ValidatorFields]: (value: ValidatorFields[K]) => boolean
-} = {
-	fio: v => v.trim().length > 0,
-	city: v => v.trim().length > 0,
-	phone: v => getDigits(v).length === 11,
-	email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
-	policy1: v => v === true,
-	policy2: v => v === true,
+// FIELD VALIDATION
+const isFieldInvalid = (field: keyof typeof formData) => {
+	return showErrors.value && !formData[field]
 }
 
-const isFieldInvalid = <K extends keyof ValidatorFields>(field: K) => {
-	const validator = validators[field]
-	const value = formData.value[field]
-
-	return showErrors.value && !validator(value)
+// TERMS
+const toggleTerms = () => {
+	showTerms.value = !showTerms.value
 }
 
 const handleTermsAccept = () => {
-	formData.value.policy2 = true
+	formData.policy2 = true
 	showTerms.value = false
 }
 
 const handleTermsClose = () => {
-	formData.value.policy2 = false
+	formData.policy2 = false
 	showTerms.value = false
 }
 
-const toggleTerms = () => {
-	if (formData.value.policy2) {
-		formData.value.policy2 = false
-	} else {
-		showTerms.value = true
-	}
-}
+// SUBMIT STEP
+const validate = (e: MouseEvent) => {
+	e.preventDefault()
+	showErrors.value = true
 
-/* const openTerms = () => {
-	if (!formData.value.policy2) {
-		showTerms.value = true
-	}
-} */
+	/* 	if (isValid.value) {
+		emit('update:step', 2)
+	} */
+	setStep(2)
+}
 </script>
 
 <template>
@@ -277,6 +225,7 @@ const toggleTerms = () => {
 					class="form-btn"
 					@click="e => validate(e)"
 					:class="{ active: isValid }"
+					:disabled="!isValid"
 				>
 					Подтверждение опыта
 
@@ -303,5 +252,12 @@ const toggleTerms = () => {
 	font-size: 18px;
 
 	line-height: 140%;
+}
+
+@media (max-width: 992px) {
+	.form-group label {
+		font-size: 10px;
+		margin-bottom: 6px;
+	}
 }
 </style>

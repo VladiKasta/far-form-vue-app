@@ -104,6 +104,7 @@ onBeforeUnmount(() => {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	line-height: 100%;
 }
 
 .dropdown__selected.uncorrect {
@@ -139,5 +140,12 @@ onBeforeUnmount(() => {
 
 .dropdown__item:hover {
 	background: #f5f5f5;
+}
+
+@media screen and (max-width: 992px) {
+	.dropdown__selected {
+		font-size: 16px;
+		padding: 6px 9px;
+	}
 }
 </style>

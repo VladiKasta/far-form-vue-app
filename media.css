@@ -1,0 +1,84 @@
+@media (max-width: 992px) {
+	.form-container {
+		padding: 20px 8px;
+		width: 96%;
+	}
+	.form-step {
+		display: block;
+	}
+
+	.form-heading {
+		flex-direction: column;
+		align-items: start;
+		gap: 12px;
+	}
+
+	.progress-bar {
+		margin-top: 9px;
+		margin-bottom: 15px;
+		gap: 15px;
+		justify-content: flex-start;
+	}
+
+	.close-icon {
+		top: 26px;
+		right: 26px;
+	}
+
+	.form-heading h2 {
+		margin-top: 0;
+		font-size: 23px;
+	}
+
+	.progress-bar .step {
+		font-size: 9px;
+		padding: 9px 6px;
+	}
+
+	.form-group input {
+		font-size: 16px;
+		padding: 6px 9px;
+	}
+
+	.form-footer {
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.dropdown {
+		max-height: 32px;
+	}
+
+	.checkbox label div {
+		display: block !important;
+		line-height: 100%;
+	}
+
+	.form-group input {
+		line-height: 100% !important;
+		font-size: 16px !important;
+	}
+
+	.question-text {
+		font-size: 16px !important;
+	}
+
+	.quiz .content div {
+		padding-left: 0 !important;
+	}
+	.quiz textarea {
+		font-size: 16px !important;
+		width: 90% !important;
+	}
+
+	@media (max-width: 390px) {
+		.progress-bar {
+			gap: 5px;
+			justify-content: space-between;
+		}
+
+		.progress-line {
+			width: 65px;
+		}
+	}
+}

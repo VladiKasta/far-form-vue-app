@@ -10,12 +10,12 @@ const props = defineProps<{
 
 type FileItem = {
 	file: File
-	objectURL: string
+	url: string
 }
 
 type ResultAnswer = {
 	answer: string
-	files: FileItem[]
+	files: File[]
 }
 
 // 👉 события для общения с родителем
@@ -57,11 +57,9 @@ const getFiles = (e: Event) => {
 		const file = files[i]
 
 		const objectURL = URL.createObjectURL(file)
+		console.log(file)
 
-		resultAnswer.files.push({
-			file,
-			objectURL,
-		})
+		resultAnswer.files.push(file)
 	}
 
 	input.value = ''
@@ -70,6 +68,10 @@ const getFiles = (e: Event) => {
 const isAllowUpload = computed(() => {
 	return resultAnswer.answer === 'yes'
 })
+
+const getFileUrl = (file: File) => {
+	return URL.createObjectURL(file)
+}
 </script>
 
 <template>
@@ -150,7 +152,7 @@ const isAllowUpload = computed(() => {
 				>
 					<div class="uplaoded-item">
 						<img
-							:src="file.objectURL"
+							:src="getFileUrl(file)"
 							alt=""
 						/>
 
