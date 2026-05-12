@@ -256,7 +256,7 @@ const validate = (e: MouseEvent) => {
 @media (max-width: 992px) {
 	.form-group label {
 		font-size: 10px;
-		margin-bottom: 6px;
+		margin-bottom: 10px;
 	}
 }
 </style>

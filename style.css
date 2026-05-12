@@ -292,6 +292,7 @@ textarea {
 	letter-spacing: 0%;
 	text-align: center;
 	text-transform: uppercase;
+	margin-left: auto;
 }
 
 .form-btn.active {
