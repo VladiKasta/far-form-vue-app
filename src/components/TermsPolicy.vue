@@ -33,7 +33,7 @@ const emit = defineEmits(['click'])
 					href="https://far.qscape.ru/local/js/vue-app/dist/files/Условия_аккредитаци_монтажников_FAR.pdf"
 				>
 					условия аккредитации монтажников FAR
-					<DownloadIcon />
+					<DownloadIcon style="display: inline" />
 				</a>
 				<!-- <a
 					download

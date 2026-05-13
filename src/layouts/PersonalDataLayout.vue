@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import CitySelect from '../components/CitySelect.vue'
+import CityInput from '../components/CityInput.vue'
 import EmailInput from '../components/EmailInput.vue'
 import FioInput from '../components/FioInput.vue'
 import NumberInput from '../components/NumberInput.vue'
@@ -8,7 +8,6 @@ import Policy from '../components/Policy.vue'
 import TermsPolicy from '../components/TermsPolicy.vue'
 import CloseIcon from '../components/UI/CloseIcon.vue'
 import LeftArrowIcon from '../components/UI/LeftArrowIcon.vue'
-import { cities } from '../composables/cities.js'
 import { useQuizStore } from '../stores/aswers'
 import TermsOfAccreditation from './TermsOfAccreditation.vue'
 
@@ -136,11 +135,10 @@ const validate = (e: MouseEvent) => {
 							Город *
 						</label>
 
-						<CitySelect
+						<CityInput
 							v-model="formData.city"
-							:options="cities"
 							:show-errors="showErrors"
-						></CitySelect>
+						/>
 					</div>
 
 					<div class="form-group">
