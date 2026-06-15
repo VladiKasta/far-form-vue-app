@@ -30,6 +30,7 @@ const emit = defineEmits(['click'])
 					style="text-decoration: underline"
 					:class="{ 'text-red': showErrors && !modelValue }"
 					download
+					target="_blank"
 					href="https://far.qscape.ru/local/js/vue-app/dist/files/Условия_аккредитаци_монтажников_FAR.pdf"
 				>
 					условия аккредитации монтажников FAR

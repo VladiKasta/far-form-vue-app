@@ -12,15 +12,11 @@ export interface BitrixFormData {
 export interface BitrixAnswers {
 	form_checkbox_5_YEARS_OF_EXPERIENCE?: string[]
 	photos_1?: File[]
-
 	form_checkbox_COMPLETE_AND_SELECT_EQUIPMENT?: string[]
 	form_textarea_86?: string
-
 	form_textarea_87?: string
-
 	form_checkbox_USED_FAR?: string[]
 	photos_2?: File[]
-
 	form_textarea_100?: string
 }
 

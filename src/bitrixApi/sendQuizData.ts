@@ -50,7 +50,7 @@ export default async function sendQuizData(payload: any) {
 
 	console.log('BITRIX OBJECT:', debugObject)
 
-	const res = await fetch('https://far.qscape.ru/local/ajax/form_far_installer.php', {
+	const res = await fetch('https://far.ru/local/ajax/form_far_installer.php', {
 		method: 'POST',
 		body: formDataBitrix,
 	})
