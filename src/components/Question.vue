@@ -223,7 +223,11 @@ const close = () => {
 				<CloseIcon @click="close"></CloseIcon>
 				<p class="title">Спасибо! Ваша заявка принята в работу.</p>
 
-				<p class="text">Мы свяжемся с вами в течение 3-х рабочих дней.</p>
+				<p class="text">
+					Спасибо! Ваша заявка принята в работу.
+					<br />
+					Мы свяжемся с вами.
+				</p>
 
 				<button
 					class="btn"
