@@ -186,7 +186,9 @@ const sendData = async () => {
 
 		if (res?.success == true) {
 			submitStatus.value = 'success'
-			ym(88794748, 'reachGoal', 'become_far_installer_step_3'); 
+			if (window.location.hostname !== 'localhost') {
+				ym(88794748, 'reachGoal', 'become_far_installer_step_3')
+			}
 		} else {
 			console.warn('Bitrix error response:', res)
 			submitStatus.value = 'error'
