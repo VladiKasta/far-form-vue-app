@@ -202,6 +202,7 @@ const getFileUrl = (file: File) => {
 			<input
 				multiple
 				class="input-files"
+				accept="image/*"
 				type="file"
 				style="display: none"
 				@change="getFiles"
