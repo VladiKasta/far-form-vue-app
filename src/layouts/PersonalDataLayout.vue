@@ -70,6 +70,7 @@ const validate = (e: MouseEvent) => {
 	showErrors.value = true
 
 	if (isValid.value) {
+		ym(88794748, 'reachGoal', 'become_far_installer_step_2'); 
 		/* emit('update:step', 2) */
 		setStep(2)
 	}
